@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/configFragment">
+
+    <fragment
+        android:id="@+id/selectionFragment"
+        android:name="com.example.surroundspeaker.ui.SelectionFragment"
+        android:label="@string/selection_fragment"
+        tools:layout="@layout/selection_fragment" >
+        <action
+            android:id="@+id/action_selectionFragment_to_servingFragment"
+            app:destination="@id/servingFragment" />
+        <argument
+            android:name="BluetoothDeviceList"
+            app:argType="android.bluetooth.BluetoothDevice[]" />
+    </fragment>
+    <fragment
+        android:id="@+id/servingFragment"
+        android:name="com.example.surroundspeaker.ui.ServingFragment"
+        android:label="@string/serving_fragment"
+        tools:layout="@layout/serving_fragment" >
+        <action
+            android:id="@+id/action_servingFragment_to_selectionFragment"
+            app:destination="@id/configFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/configFragment"
+        android:name="com.example.surroundspeaker.ui.ConfigFragment"
+        android:label="config_fragment"
+        tools:layout="@layout/config_fragment" >
+        <action
+            android:id="@+id/action_configFragment_to_selectionFragment"
+            app:destination="@id/selectionFragment" />
+    </fragment>
+</navigation>
