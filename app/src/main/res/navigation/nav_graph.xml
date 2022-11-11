@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/selectionFragment"
-        android:name="com.example.surroundspeaker.ui.SelectionFragment"
+        android:name="com.example.speakeradvanced.ui.SelectionFragment"
         android:label="@string/selection_fragment"
-        tools:layout="@layout/selection_fragment" >
+        tools:layout="@layout/fragment_selection" >
         <action
             android:id="@+id/action_selectionFragment_to_servingFragment"
             app:destination="@id/servingFragment" />
@@ -19,18 +19,18 @@
     </fragment>
     <fragment
         android:id="@+id/servingFragment"
-        android:name="com.example.surroundspeaker.ui.ServingFragment"
+        android:name="com.example.speakeradvanced.ui.ServingFragment"
         android:label="@string/serving_fragment"
-        tools:layout="@layout/serving_fragment" >
+        tools:layout="@layout/fragment_serving" >
         <action
             android:id="@+id/action_servingFragment_to_selectionFragment"
             app:destination="@id/configFragment" />
     </fragment>
     <fragment
         android:id="@+id/configFragment"
-        android:name="com.example.surroundspeaker.ui.ConfigFragment"
+        android:name="com.example.speakeradvanced.ui.ConfigurationFragment"
         android:label="config_fragment"
-        tools:layout="@layout/config_fragment" >
+        tools:layout="@layout/fragment_configuration" >
         <action
             android:id="@+id/action_configFragment_to_selectionFragment"
             app:destination="@id/selectionFragment" />

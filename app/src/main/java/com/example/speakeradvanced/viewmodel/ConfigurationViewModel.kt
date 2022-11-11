@@ -5,26 +5,28 @@ import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
-import com.example.speakeradvanced.utils.BuildUtils
+import com.example.speakeradvanced.ui.utils.BuildUtils
 
 class ConfigurationViewModel : ViewModel() {
 
     private val allPermissions by lazy {        //Should move to Provider
         mutableMapOf<String, Boolean>().let {
-            it[Manifest.permission.BLUETOOTH] = false
             when (BuildUtils.version()) {
                 in 6..9 -> {
                     it[Manifest.permission.ACCESS_COARSE_LOCATION] = false
                     it[Manifest.permission.BLUETOOTH_ADMIN] = false
                 }
-                in 10..12 -> {
+                in 10..11 -> {
+                    it[Manifest.permission.BLUETOOTH] = false
                     it[Manifest.permission.BLUETOOTH_ADMIN] = false
                     it[Manifest.permission.ACCESS_FINE_LOCATION] = false
                     it[Manifest.permission.ACCESS_BACKGROUND_LOCATION] = false
                 }
                 12 -> {
+                    it[Manifest.permission.ACCESS_FINE_LOCATION] = false
+                    it[Manifest.permission.ACCESS_BACKGROUND_LOCATION] = false
                     it[Manifest.permission.BLUETOOTH_CONNECT] = false
-                    it[Manifest.permission.BLUETOOTH_SCAN] = false
+                    //it[Manifest.permission.BLUETOOTH_SCAN] = false
                 }
             }
             it
