@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
-import com.example.speakeradvanced.ui.utils.BuildUtils
+import com.example.speakeradvanced.utils.BuildUtils
 
 class ConfigurationViewModel : ViewModel() {
 
@@ -26,7 +26,6 @@ class ConfigurationViewModel : ViewModel() {
                     it[Manifest.permission.ACCESS_FINE_LOCATION] = false
                     it[Manifest.permission.ACCESS_BACKGROUND_LOCATION] = false
                     it[Manifest.permission.BLUETOOTH_CONNECT] = false
-                    //it[Manifest.permission.BLUETOOTH_SCAN] = false
                 }
             }
             it

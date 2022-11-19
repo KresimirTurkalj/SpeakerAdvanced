@@ -1,4 +1,4 @@
-package com.example.speakeradvanced.ui.utils
+package com.example.speakeradvanced.utils
 
 class Constants{
     companion object {

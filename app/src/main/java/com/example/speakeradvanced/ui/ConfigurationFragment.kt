@@ -19,7 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.speakeradvanced.R
-import com.example.speakeradvanced.ui.utils.BuildUtils
+import com.example.speakeradvanced.utils.BuildUtils
 import com.example.speakeradvanced.viewmodel.ConfigurationViewModel
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationServices
@@ -31,10 +31,7 @@ import com.google.android.gms.tasks.Task
 class ConfigurationFragment : Fragment() {
 
     companion object {
-        const val REQUEST_ENABLE_BT = 11
         const val REQUEST_CODE_CHECK_SETTINGS = 12
-        const val LOCATION_UPDATE_INTERVAL = 1000L
-        const val LOCATION_UPDATE_FASTEST_INTERVAL = 500L
     }
 
     private lateinit var viewModel: ConfigurationViewModel
@@ -148,16 +145,12 @@ class ConfigurationFragment : Fragment() {
     //endregion
 
     private fun checkServices() {
-        if (!areServicesEnabled()) {
-            if (!bluetoothManager.adapter.isEnabled) {
-                askForBluetooth()
-            }
-            else if (!LocationManagerCompat.isLocationEnabled(locationManager)) {
-                askForLocation()
-            }
-        } else {
+        if (!bluetoothManager.adapter.isEnabled)
+            askForBluetooth()
+        else if (!LocationManagerCompat.isLocationEnabled(locationManager))
+            askForLocation()
+        else
             findNavController().navigate(R.id.selectionFragment)
-        }
     }
 
     private fun showRationale() {
@@ -169,7 +162,7 @@ class ConfigurationFragment : Fragment() {
         AlertDialog.Builder(context)
             .setTitle(R.string.title_explanation)
             .setMessage(message)
-            .setPositiveButton(R.string.ok) { _, _ -> askPermissions() }
+            .setPositiveButton(R.string.ok_text) { _, _ -> askPermissions() }
             .setCancelable(false)
             .show()
     }
@@ -206,11 +199,6 @@ class ConfigurationFragment : Fragment() {
         }
     }
 
-    private fun areServicesEnabled(): Boolean {
-        return bluetoothManager.adapter.isEnabled &&
-                LocationManagerCompat.isLocationEnabled(locationManager)
-    }
-
     private fun askPermissions() {
         for (permission in viewModel.getAllUngivenPermissions()) {
             when (permission) {
@@ -242,7 +230,7 @@ class ConfigurationFragment : Fragment() {
     private fun showPersistentRationale(permission: String) {
         val alertDialog = AlertDialog.Builder(context)
             .setTitle(R.string.runtime_request)
-            .setPositiveButton(R.string.ok) { _, _ ->
+            .setPositiveButton(R.string.ok_text) { _, _ ->
                 try {
                     startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS))
                 } catch (e: Exception) {

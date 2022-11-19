@@ -8,7 +8,7 @@
     <string name="message_explanation"><i>Following permissions are required for proper working of application.</i></string>
     <string name="message_location">Location permission is required for calculation of current distance to Bluetooth devices.</string>
     <string name="message_bluetooth">Bluetooth permission is required for automatic change of current Bluetooth device.</string>
-    <string name="ok">OK</string>
+    <string name="ok_text">OK</string>
     <string name="give">Give</string>
     <string name="given">Given</string>
     <string name="runtime_request">Can\'t show runtime request</string>
@@ -23,11 +23,13 @@
     <string name="enable_location">Enable Location</string>
     <string name="headline_text">Surround Speaker</string>
     <string name="channel_id">Bluetooth</string>
-    <string name="process_on">Searching...</string>
-    <string name="loading">Loading...</string>
+    <string name="process_on">Searching…</string>
+    <string name="loading">Loading…</string>
     <string name="title_notification">Bluetooth service</string>
     <string name="message_notification">Bluetooth foreground service</string>
     <string name="bluetooth_service">Bluetooth Service</string>
     <string name="select">select</string>
     <string name="include_unreachable_speakers">Include unreachable speakers?</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
