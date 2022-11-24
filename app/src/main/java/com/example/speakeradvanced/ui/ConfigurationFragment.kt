@@ -95,6 +95,16 @@ class ConfigurationFragment : Fragment() {
             }
         }
 
+    private val requestBluetoothScanPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+        if (isGranted) {
+            viewModel.changeStateOfPermission(BLUETOOTH_SCAN, true)
+        }
+
+        if (viewModel.allPermissionsGiven()) {
+            checkServices()
+        }
+    }
+
     private val requestBluetoothAdminPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
             if (isGranted) {
                 if(BuildUtils.isVersion(12)) {
@@ -204,6 +214,10 @@ class ConfigurationFragment : Fragment() {
             when (permission) {
                 BLUETOOTH -> {
                     requestBluetoothPermission.launch(permission)
+                }
+
+                BLUETOOTH_SCAN -> {
+                    requestBluetoothScanPermission.launch(permission)
                 }
 
                 BLUETOOTH_ADMIN, BLUETOOTH_CONNECT -> {

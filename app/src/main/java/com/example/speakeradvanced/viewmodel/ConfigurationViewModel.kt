@@ -26,6 +26,7 @@ class ConfigurationViewModel : ViewModel() {
                     it[Manifest.permission.ACCESS_FINE_LOCATION] = false
                     it[Manifest.permission.ACCESS_BACKGROUND_LOCATION] = false
                     it[Manifest.permission.BLUETOOTH_CONNECT] = false
+                    it[Manifest.permission.BLUETOOTH_SCAN] = false
                 }
             }
             it

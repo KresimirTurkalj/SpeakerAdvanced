@@ -25,6 +25,7 @@ class AdapterA2DP(
 	init {
 		liveDataOfSpeakers.observe(lifecycleOwner) { updateList(it) }
 	}
+
 	interface BluetoothDisplayInfo {
 		fun getDeviceName(): String
 		fun getDeviceAddress(): String
@@ -34,15 +35,27 @@ class AdapterA2DP(
 	private fun updateList(list: List<BluetoothSpeaker>) {
 		if(listOfSpeakers.containsAll(list) && list.containsAll(listOfSpeakers)) {
 			Log.d("AdapterA2DP", "Lists are same.")
-		}
-		else if(listOfSpeakers.containsAll(list)) {
-			Log.d("AdapterA2DP", "New list contains old and more.")
-		}
-		else if(list.containsAll(listOfSpeakers)) {
-			Log.d("AdapterA2DP", "Old list contains new and more.")
-		}
-		else {
-			Log.d("AdapterA2DP", "Neither list is a subset.")
+		} else {
+			if (listOfSpeakers.containsAll(list)) {
+				Log.d("AdapterA2DP", "Old list contains new and more.")
+				listOfSpeakers.forEachIndexed { index, speaker ->
+					if (!list.contains(speaker)) {
+						notifyItemRemoved(index)
+					}
+				}
+			} else if (list.containsAll(listOfSpeakers)) {
+				Log.d("AdapterA2DP", "New list contains old and more.")
+				list.forEachIndexed { index, speaker ->
+					if (!listOfSpeakers.contains(speaker)) {
+						notifyItemInserted(index)
+					}
+				}
+			} else {
+				Log.d("AdapterA2DP", "Neither list is a subset.")
+				notifyDataSetChanged()
+			}
+			listOfSpeakers.clear()
+			listOfSpeakers.addAll(list)
 		}
 	}
 

@@ -67,13 +67,14 @@ class SelectionFragment : Fragment() {
                 Toast.makeText(requireContext(), "Service is down.", Toast.LENGTH_LONG).show()
             }
         }
+    }
 
+    override fun onStart() {
+        Toast.makeText(requireContext(), "Selection is started.", Toast.LENGTH_LONG).show()
+        super.onStart()
         Intent(requireContext(), BluetoothFGService::class.java).also { intent : Intent ->
             requireContext().bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
-
-
     }
-
     //endregion
 }

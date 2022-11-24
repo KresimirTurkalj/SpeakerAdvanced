@@ -5,13 +5,16 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.Intent
 import android.os.*
 import android.util.Log
 import androidx.lifecycle.LifecycleService
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.distinctUntilChanged
 import com.example.speakeradvanced.R
 import com.example.speakeradvanced.data.BluetoothSpeaker
 import com.example.speakeradvanced.ui.StartActivity
@@ -22,8 +25,11 @@ import com.example.speakeradvanced.utils.Constants.Companion.SCAN_INTERVAL
 class BluetoothFGService : LifecycleService() {
 
 	inner class BluetoothBinder : Binder() {
-		fun getSelectedSpeakerLiveData(): MutableLiveData<List<BluetoothSpeaker>> = listOfSelectedBluetoothSpeakers
-		fun getBindedSpeakersLiveData(): MutableLiveData<List<BluetoothSpeaker>> = listOfBindedBluetoothSpeakers
+		fun getSelectedSpeakerLiveData(): LiveData<List<BluetoothSpeaker>> =
+			listOfSelectedBluetoothSpeakers
+
+		fun getBindedSpeakersLiveData(): LiveData<List<BluetoothSpeaker>> =
+			listOfBindedBluetoothSpeakers.distinctUntilChanged()
 
 		fun selectSpeakersForObservation(listOfSpeakers: List<BluetoothSpeaker>) {
 			listOfSpeakers.forEachIndexed { index: Int, speaker: BluetoothSpeaker ->
@@ -85,7 +91,7 @@ class BluetoothFGService : LifecycleService() {
 		notificationManager.createNotificationChannel(channel)
 
 		val pendingIntent: PendingIntent = Intent(this, StartActivity::class.java).let { notificationIntent ->
-			PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+			PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
 		}
 
 		val notification: Notification = Notification.Builder(baseContext, getString(R.string.bluetooth_service))
@@ -103,14 +109,25 @@ class BluetoothFGService : LifecycleService() {
 		bluetoothManager.adapter.bondedDevices.forEach {
 			if (it.uuids != null && it.uuids.contains(A2DP_UUID)) {
 				Log.d("Bluetooth Bonded Devices", it.toString())
-				list.add(BluetoothSpeaker(it, SCAN_INTERVAL, this))
+				list.add(
+					BluetoothSpeaker(
+						it,
+						getGattDevice(it.address),
+						SCAN_INTERVAL,
+						this,
+					)
+				)
 			}
 		}
 		listOfBindedBluetoothSpeakers.postValue(list)
 	}
 
+	private fun getGattDevice(address: String)  : BluetoothDevice{
+		return bluetoothManager.adapter.getRemoteDevice(address) //TODO
+	}
+
 	override fun onDestroy() {
-		Log.d(this.javaClass.name,"Service stopped")
+		Log.d(this.javaClass.name, "Service stopped")
 		stopForeground(true)
 		listOfBindedBluetoothSpeakers.postValue(emptyList())
 		listOfSelectedBluetoothSpeakers.postValue(emptyList())

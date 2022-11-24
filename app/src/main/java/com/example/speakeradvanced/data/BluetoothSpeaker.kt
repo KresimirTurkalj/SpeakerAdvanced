@@ -19,7 +19,8 @@ import java.io.Closeable
 @SuppressLint("MissingPermission")
 class BluetoothSpeaker(
     private val bluetoothDevice: BluetoothDevice,
-    private var interval : Long,
+    gattDevice: BluetoothDevice,
+    private var interval: Long,
     context: Context
 ) : AdapterA2DP.BluetoothDisplayInfo, Closeable {
 
@@ -57,7 +58,7 @@ class BluetoothSpeaker(
     }
 
     private var connectionState = BluetoothGatt.STATE_DISCONNECTED
-    private var bluetoothGatt: BluetoothGatt = bluetoothDevice.connectGatt(context, true, bluetoothGattCallback)
+    private var bluetoothGatt: BluetoothGatt = gattDevice.connectGatt(context, true, bluetoothGattCallback)
     private val liveDataRssi = MutableLiveData<Int>()
     private val liveSignalImageId = MutableLiveData(R.drawable.weak_signal)
 
