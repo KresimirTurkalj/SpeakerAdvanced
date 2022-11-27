@@ -5,6 +5,7 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.bluetooth.BluetoothA2dp
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.content.Context
@@ -123,7 +124,20 @@ class BluetoothFGService : LifecycleService() {
 	}
 
 	private fun getGattDevice(address: String)  : BluetoothDevice{
-		return bluetoothManager.adapter.getRemoteDevice(address) //TODO
+		return bluetoothManager.adapter.getRemoteDevice(getNewAddress(address))
+	}
+
+	private fun getNewAddress(address : String): String {
+		val newNumber : Long = address.replace(":", "").toLong(16) + 1
+		val arrayOfNumbers = newNumber.toString(16).toCharArray()
+		var newAddress = String()
+		arrayOfNumbers.forEachIndexed { index, c ->
+			newAddress += c.uppercase()
+			if(index % 2 == 1 && index != arrayOfNumbers.lastIndex) {
+				newAddress += ':'
+			}
+		}
+		return newAddress
 	}
 
 	override fun onDestroy() {

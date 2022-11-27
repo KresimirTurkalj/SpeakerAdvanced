@@ -80,9 +80,9 @@ class BluetoothSpeaker(
 
     private fun setCurrentSignal(rssi: Int) {
         liveSignalImageId.postValue(when(rssi) {
-            in -10..0 -> R.drawable.great_signal
-            in -30..-10 -> R.drawable.good_signal
-            in -60..-30 -> R.drawable.fair_signal
+            in -40..0 -> R.drawable.great_signal
+            in -60..-40 -> R.drawable.good_signal
+            in -80..-60 -> R.drawable.fair_signal
 
             else -> {R.drawable.weak_signal}
         })
